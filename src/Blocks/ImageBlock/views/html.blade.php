@@ -1,0 +1,1 @@
+<img src="{{!empty($src) ? Storage::url($src) : ''}}" alt="{{$alt ?? ''}}">

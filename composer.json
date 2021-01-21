@@ -1,0 +1,21 @@
+{
+    "name": "lucasmgonzalez/laravel-cms",
+    "authors": [
+        {
+            "name": "Lucas Gonzalez",
+            "email": "lucasmgonzalez1992@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "livewire/livewire": "^2.3",
+        "illuminate/database": "^8.0",
+        "illuminate/support": "^8.0",
+        "illuminate/http": "^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CMS\\": "packages/CMS/src/"
+        }
+    }
+}
