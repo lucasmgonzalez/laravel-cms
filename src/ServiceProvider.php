@@ -59,7 +59,20 @@ class ServiceProvider extends SupportServiceProvider
 
     public function registerRoutes()
     {
-        $this->loadRoutesFrom(__DIR__ . '/../routes.php');
+        Route::prefix('api/cms')
+            ->middleware('api')
+            ->namespace('CMS\Http\Controllers')
+            ->group(function() {
+                $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
+            });
+
+        Route::prefix('cms')
+            ->middleware('web')
+            ->namespace('CMS\Http\Controllers')
+            ->group(function() {
+                $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+            });
+        
     }
 
     public function registerViews()
