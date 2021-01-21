@@ -8,10 +8,6 @@ class ImageBlockComponent extends BlockComponent
 {
     use WithFileUploads;
 
-    protected $blockModel = ImageBlock::class;
-
-    protected $type = "image";
-
     protected $rules = [
         'block.data.src' => 'required|string',
         'block.data.alt' => 'required|string',

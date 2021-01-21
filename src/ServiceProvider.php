@@ -21,7 +21,6 @@ class ServiceProvider extends SupportServiceProvider
     public function boot()
     {
         $this->registerDefaultBlocks();
-        $this->registerBlockRelationMorphMap();
         $this->registerMigrations();
 
         $this->registerRouteModelBinding();
@@ -36,7 +35,10 @@ class ServiceProvider extends SupportServiceProvider
     {
         PostBlock::registerBlock($type, $class);
         Livewire::component("cms::blocks.{$type}", $class::$component);
-        $this->loadViewsFrom($class::$componentViews, "cms-blocks-{$type}");
+        $this->loadViewsFrom((new $class)->componentViews(), "cms-blocks-{$type}");
+        Relation::morphMap([
+            $type => $class
+        ]);
     }
 
     public function registerDefaultBlocks()
@@ -46,11 +48,6 @@ class ServiceProvider extends SupportServiceProvider
         $this->registerPostBlock('youtube', YoutubeBlock::class);
         // Block::registerBlock('gallery', GalleryBlock::class);
         // Block::registerBlock('instagram', InstagramBlock::class);
-    }
-
-    public function registerBlockRelationMorphMap()
-    {
-        Relation::morphMap(PostBlock::getRegisteredBlocks());
     }
 
     public function registerMigrations()

@@ -35,10 +35,10 @@ class BlockComponent extends Component
     {
         switch ($this->mode) {
             case self::PREVIEW_MODE:
-                return view("cms-blocks-{$this->type}::preview");
+                return view("cms-blocks-{$this->block->type}::preview");
             case self::EDIT_MODE:
             default:
-                return view("cms-blocks-{$this->type}::edit");
+                return view("cms-blocks-{$this->block->type}::edit");
         }
     }
 

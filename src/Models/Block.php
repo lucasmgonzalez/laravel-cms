@@ -9,7 +9,20 @@ abstract class Block extends Model
 
     protected string $type;
 
+    protected string $componentViewsPath;
+
     protected $fillable = ['data'];
+
+    public function componentViews()
+    {
+        if (!empty($this->componentViewsPath)) {
+            return $this->componentViewsPath;
+        }
+
+        $reflection = new \ReflectionClass(new static);
+
+        return dirname($reflection->getFileName()) . '/views';
+    }
 
     public function toHTML()
     {

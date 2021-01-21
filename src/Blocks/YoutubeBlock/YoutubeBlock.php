@@ -8,5 +8,4 @@ class YoutubeBlock extends Block
     protected string $type = 'youtube';
 
     public static $component = YoutubeBlockComponent::class;
-    public static $componentViews = __DIR__ . '/views';
 }
