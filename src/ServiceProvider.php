@@ -18,9 +18,11 @@ use Livewire\LivewireBladeDirectives;
 
 class ServiceProvider extends SupportServiceProvider
 {
-    public function boot()
+    public function register()
     {
-        $this->registerDefaultBlocks();
+        $this->mergeConfigFrom(__DIR__.'/../config/cms.php', 'cms');
+
+        $this->registerPostBlocks();
         $this->registerMigrations();
 
         $this->registerRouteModelBinding();
@@ -31,23 +33,17 @@ class ServiceProvider extends SupportServiceProvider
         $this->registerLivewireComponents();
     }
 
-    public function registerPostBlock($type, $class)
+    public function registerPostBlocks()
     {
-        PostBlock::registerBlock($type, $class);
-        Livewire::component("cms::blocks.{$type}", $class::$component);
-        $this->loadViewsFrom((new $class)->componentViews(), "cms-blocks-{$type}");
-        Relation::morphMap([
-            $type => $class
-        ]);
-    }
+        $registeredBlocks = collect(PostBlock::getRegisteredBlocks());
 
-    public function registerDefaultBlocks()
-    {
-        $this->registerPostBlock('text', TextBlock::class);
-        $this->registerPostBlock('image', ImageBlock::class);
-        $this->registerPostBlock('youtube', YoutubeBlock::class);
-        // Block::registerBlock('gallery', GalleryBlock::class);
-        // Block::registerBlock('instagram', InstagramBlock::class);
+        $registeredBlocks->each(function($class, $type) {
+            Livewire::component("cms::blocks.{$type}", $class::$component);
+            $this->loadViewsFrom((new $class)->componentViews(), "cms-blocks-{$type}");
+            Relation::morphMap([
+                $type => $class
+            ]);
+        });
     }
 
     public function registerMigrations()
