@@ -11,7 +11,7 @@ class Post extends Model
 
     public function blocks()
     {
-        return $this->hasMany(PostBlock::class);
+        return $this->hasMany(PostBlock::class)->orderBy('index_position', 'asc');
     }
 
     public function categories()

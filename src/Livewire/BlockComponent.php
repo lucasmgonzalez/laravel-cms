@@ -11,7 +11,7 @@ class BlockComponent extends Component
     const PREVIEW_MODE = 'preview';
 
     public $mode = 'preview';
-
+    
     public $postBlock;
     public $block;
 
@@ -33,18 +33,37 @@ class BlockComponent extends Component
 
     public function render()
     {
-        switch ($this->mode) {
-            case self::PREVIEW_MODE:
-                return view("cms-blocks-{$this->block->type}::preview");
-            case self::EDIT_MODE:
-            default:
-                return view("cms-blocks-{$this->block->type}::edit");
-        }
+        return view("cms::block")->with([
+            'mode' => $this->mode,
+            'block' => $this->block
+        ]);
     }
 
     public function save()
     {
         $this->block->save();
+
+        $this->mode = self::PREVIEW_MODE;
+
+        $this->emitUp('saved');
+    }
+
+    public function moveBlock($direction = 'down')
+    {
+        if ($direction === 'up') {
+            $this->emitUp('moveBlock', $this->postBlock, -1);
+        } elseif ($direction === 'down') {
+            $this->emitUp('moveBlock', $this->postBlock, 1);
+        }
+    }
+
+    public function addBlock($position, $type = 'text')
+    {
+        if ($position === 'above') {
+            $this->emitUp('addBlockAbove', $this->postBlock, $type);
+        } else if($position === 'below') {
+            $this->emitUp('addBlockBelow', $this->postBlock, $type);
+        }
     }
 
     public function changeBlockType($newType)

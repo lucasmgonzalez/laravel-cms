@@ -1,4 +1,4 @@
-<div>
+<div class="mt-5">
     @foreach ($post->blocks as $block)
         @livewire("cms::blocks.{$block->type}", ['postBlock' => $block], key($block->id . '-' . $block->type))
     @endforeach

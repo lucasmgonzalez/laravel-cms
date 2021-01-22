@@ -17,6 +17,7 @@ class CreatePostBlockTable extends Migration
             $table->id();
             
             $table->foreignId('post_id')->constrained('posts');
+            $table->integer('index_position')->default(0);
             $table->morphs('blockable');
             
             $table->timestamps();
